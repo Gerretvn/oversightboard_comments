@@ -1,15 +1,17 @@
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path)) 
+
 library(tm)
 library(stringr)
 library(quanteda)
 library(tosca)
-library("wordcloud")
+library(wordcloud)
+library(pdftools)
 
 url <- "https://osbcontent.s3-eu-west-1.amazonaws.com/PC+Appendix+2021-001-FB-FBR.pdf"
 
 download.file(url, 'public_comments.pdf', mode="wb")
 
-pdf <- pdftools::pdf_text(pdf = "public_comments.pdf")
+pdf <- pdf_text(pdf = "public_comments.pdf")
 
 # get "full comments"
 full_comments <- str_match_all(pdf, "(?s)Full Comment\\s*(.*?)\\s*Link to Attachment")
