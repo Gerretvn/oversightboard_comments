@@ -14,13 +14,9 @@ download.file(url, 'public_comments.pdf', mode="wb")
 pdf <- pdf_text(pdf = "public_comments.pdf")
 
 # get "full comments"
-full_comments <- str_match_all(pdf, "(?s)Full Comment\\s*(.*?)\\s*Link to Attachment")
-
-full_comments_vec <- c()
-
-for (i in 1:length(full_comments)){
-  full_comments_vec[i] <- full_comments[[i]][2]
-}
+pdf_collapse <- paste(pdf,collapse="")
+pdf_split <- unlist(strsplit(pdf_collapse, split='Link to Attachment', fixed=TRUE))
+full_comments_vec <- sub(".*Full Comment", "", pdf_split)
 
 # delet NAs
 full_comments_vec <- full_comments_vec[!is.na(full_comments_vec)]
@@ -48,6 +44,7 @@ full_comments_vec <- gsub("freedom of speech", "freedom_of_speech", full_comment
 full_comments_vec <- gsub("donald j trump ", "donald_j_trump", full_comments_vec)
 full_comments_vec <- gsub("january 6", "january_6 ", full_comments_vec)
 full_comments_vec <- gsub("maxine waters", "maxine_waters ", full_comments_vec)
+full_comments_vec <- gsub("oversight board", "oversight_board", full_comments_vec)
 
 df <- data.frame("id"=1:length(full_comments_vec), "text"=full_comments_vec)
 
@@ -61,7 +58,7 @@ textmeta <- readTextmeta(path=".", file="comments.csv", cols= cols, dateFormat =
 
 # preprocessing with tosca
 
-corpusClean <- cleanTexts(object = textmeta, sw = c(tm::stopwords("en"),"said", "will", "us", "new", "also", "see"), rmNumbers= F, checkUTF8=F)
+corpusClean <- cleanTexts(object = textmeta, sw = c(tm::stopwords("en"),"said", "will", "us", "new", "also", "see"), checkUTF8=F)
 
 # create wordtable
 wordtable <- makeWordlist(corpusClean)
