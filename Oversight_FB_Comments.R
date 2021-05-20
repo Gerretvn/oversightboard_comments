@@ -21,7 +21,7 @@ for (i in 1:length(short_comments)){
   short_comments_vec[i] <- short_comments[[i]][2]
 }
 
-short_comments_vec <- short_comments_vec[!is.na(short_comments_vec)] # delet NAs
+short_comments_vec <- short_comments_vec[!is.na(short_comments_vec)] # delete NAs
 
 # get "full comments"
 pdf_collapse <- paste(pdf,collapse="")
@@ -39,7 +39,7 @@ for (i in 1:7607){
   }
 }
 
-# Preprocessing
+# pre-processing
 text <- tolower(text)
 text <- removePunctuation(text)
 
@@ -82,7 +82,7 @@ cols=c("id", "text")
 textmeta <- readTextmeta(path=".", file="Comments_all.csv", cols= cols, dateFormat =
                            "%Y-%m-%d",idCol = "id", textCol = "text", encoding = "") 
 
-# preprocessing with tosca
+# pre-processing with tosca
 corpusClean <- cleanTexts(object = textmeta, sw = c(tm::stopwords("en"),"said", "will", "us", "new", "also", "see"), checkUTF8=F)
 
 # create wordtable
